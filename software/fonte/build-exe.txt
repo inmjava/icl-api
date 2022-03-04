@@ -1,0 +1,361 @@
+build.build.openshift.io/pic-bin-11 started
+Receiving source from STDIN as file pic-microservice-0.0.1-SNAPSHOT.jar
+Caching blobs under "/var/cache/blobs".
+Getting image source signatures
+Copying blob sha256:64d1ef3b7da93a80b0f0dbb170bd0dae897197330eeca5d4b28b32406ce05bf5
+Copying blob sha256:c9281c141a1bfec06e291d2ad29bfdedfd10a99d583fc0f48d3c26723ebe0761
+Copying blob sha256:31114e120ca0c7dc51e01721c5a689a614edb6c86de11301d503c72be1540c79
+Copying config sha256:781deed5dc9a9b694bf99bc690876b040c3cd3a21cbbf91dc8d4e334774c8e58
+Writing manifest to image destination
+Storing signatures
+Generating dockerfile with builder image image-registry.openshift-image-registry.svc:5000/openshift/openjdk-11-rhel7@sha256:5fb3543c0d42146f0506c1ea4d09575131da6a2f27885729b7cfce13a0fa90e3
+STEP 1: FROM image-registry.openshift-image-registry.svc:5000/openshift/openjdk-11-rhel7@sha256:5fb3543c0d42146f0506c1ea4d09575131da6a2f27885729b7cfce13a0fa90e3
+Adding transient rw bind mount for /run/secrets/rhsm
+STEP 2: LABEL "io.openshift.build.image"="image-registry.openshift-image-registry.svc:5000/openshift/openjdk-11-rhel7@sha256:5fb3543c0d42146f0506c1ea4d09575131da6a2f27885729b7cfce13a0fa90e3"       "io.openshift.build.source-location"="/tmp/build/inputs"       "io.openshift.s2i.scripts-url"="http://paasbash.copel.nt/scriptpaas/.s2i/bin/"       "io.openshift.s2i.destination"="/tmp"
+STEP 3: ENV OPENSHIFT_BUILD_NAME="pic-bin-11"     OPENSHIFT_BUILD_NAMESPACE="pic-apihml"
+STEP 4: USER root
+STEP 5: COPY upload/scripts /tmp/scripts
+STEP 6: COPY upload/src /tmp/src
+STEP 7: RUN chown -R 185:0 /tmp/scripts /tmp/src
+STEP 8: USER 185
+STEP 9: RUN /tmp/scripts/assemble
+########## VERSAO 9.1 ##########
+########## COPIANDO CODIGO FONTE ##########
+mv: cannot stat '/tmp/src/fonte/*': No such file or directory
+########## COPIANDO SCRIPTS DE INICILIZACAO ##########
+'/usr/local/s2i/assemble' -> '/tmp/paas/assemble'
+'/usr/local/s2i/common.sh' -> '/tmp/paas/common.sh'
+'/usr/local/s2i/run' -> '/tmp/paas/run'
+'/usr/local/s2i/s2i-setup' -> '/tmp/paas/s2i-setup'
+'/usr/local/s2i/save-artifacts' -> '/tmp/paas/save-artifacts'
+'/usr/local/s2i/scl-enable-maven' -> '/tmp/paas/scl-enable-maven'
+'/usr/local/s2i/usage' -> '/tmp/paas/usage'
+########## PROTEGENDO RUN ##########
+removed '/tmp/paas/run'
+'/tmp/paas/assemble' -> '/tmp/paas/assemble-original'
+'/tmp/paas/assemble-original' -> '/tmp/scripts/assemble-original'
+'/tmp/paas/common.sh' -> '/tmp/scripts/common.sh'
+'/tmp/paas/s2i-setup' -> '/tmp/scripts/s2i-setup'
+'/tmp/paas/save-artifacts' -> '/tmp/scripts/save-artifacts'
+'/tmp/paas/scl-enable-maven' -> '/tmp/scripts/scl-enable-maven'
+'/tmp/paas/usage' -> '/tmp/scripts/usage'
+########## RTA HEALTH_CHECK ##########
+cp: cannot stat '/tmp/src/health_check.sh': No such file or directory
+cp: cannot stat '/tmp/src/health_check.sh': No such file or directory
+########## COPIANDO LIBS ##########
+chmod: cannot access '/home/jboss/source/health_check.sh': No such file or directory
+cp: cannot stat '/tmp/src/lib/*': No such file or directory
+########## INICIANDO ASSEMBLE-ORIGINAL ##########
+INFO S2I source build with plain binaries detected
+INFO Copying binaries from /tmp/src to /deployments ...
+pic-microservice-0.0.1-SNAPSHOT.jar
+########## MVN SETTINGS ##########
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <!-- ### configured local repository ### -->
+
+  <servers>
+    <!-- ### configured servers ### -->
+  </servers>
+
+  <mirrors>
+    <!-- ### configured mirrors ### -->
+  </mirrors>
+
+  <proxies>
+    <!-- ### configured http proxy ### -->
+  </proxies>
+
+  <profiles>
+
+    <!-- JBoss EAP Maven repository -->
+    <profile>
+      <id>jboss-eap-repository</id>
+      <activation>
+        <property>
+          <name>com.redhat.xpaas.repo.redhatga</name>
+          <value/>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>redhat-ga-repository</id>
+          <url>https://maven.repository.redhat.com/ga/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>redhat-ea-repository</id>
+          <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>jboss-eap-repository</id>
+          <url>https://maven.repository.redhat.com/techpreview/all</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>redhat-ga-plugin-repository</id>
+          <url>https://maven.repository.redhat.com/ga/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>redhat-ea-plugin-repository</id>
+          <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>jboss-eap-plugin-repository</id>
+          <url>https://maven.repository.redhat.com/techpreview/all</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- JBoss EAP Maven repository (HTTP version, disabled by default) -->
+    <profile>
+      <id>jboss-eap-repository-insecure</id>
+      <repositories>
+        <repository>
+          <id>redhat-ga-repository</id>
+          <url>http://maven.repository.redhat.com/ga/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>redhat-ea-repository</id>
+          <url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>jboss-eap-repository</id>
+          <url>http://maven.repository.redhat.com/techpreview/all</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>redhat-ga-plugin-repository</id>
+          <url>http://maven.repository.redhat.com/ga/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>redhat-ea-plugin-repository</id>
+          <url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>jboss-eap-plugin-repository</id>
+          <url>http://maven.repository.redhat.com/techpreview/all</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- JBoss Community Maven repository -->
+    <profile>
+      <id>jboss-community-repository</id>
+      <activation>
+        <property>
+          <name>com.redhat.xpaas.repo.jbossorg</name>
+          <value/>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>jboss-community-repository</id>
+          <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>jboss-community-plugin-repository</id>
+          <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- JBoss Community Maven repository (HTTP version, disabled by default) -->
+    <profile>
+      <id>jboss-community-repository-insecure</id>
+      <repositories>
+        <repository>
+          <id>jboss-community-repository</id>
+          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>jboss-community-plugin-repository</id>
+          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- Override the repository "central" from the Maven Super POM, to set HTTPS by default -->
+    <profile>
+      <id>securecentral</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- central repositories via HTTP. Disabled by default. -->
+    <profile>
+      <id>insecurecentral</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <!-- ### configured profiles ### -->
+
+  </profiles>
+  <activeProfiles>
+    <activeProfile>securecentral</activeProfile>
+    <!-- ### active profiles ### -->
+  </activeProfiles>
+</settings>
+########## EXECUTA ARQUIVOS *.SH S2I/BIN ##########
+########## COPIA EAR PROJETOS MULTIMODULOS DO PIC ##########
+STEP 10: CMD /tmp/scripts/run
+STEP 11: COMMIT temp.builder.openshift.io/pic-apihml/pic-bin-11:b6eff0ea
+Getting image source signatures
+Copying blob sha256:e10ae1eb4f450b747303a918e08c2fc37ad9965f5f14b364fff6b94b0c187374
+Copying blob sha256:b77d33d4cee2c0a0b2131e78ca94dc1a7ac9b4817ac7f8a0456ae68d3fb89883
+Copying blob sha256:728e7c1d97dbed0d0a12bcde2c3345064f93d8301c1ac5dfbf8922ce39776191
+Copying blob sha256:9c02e9fdde9aa6f2772fe76939442874267a105057b17f7eac836d434af5de7e
+Copying config sha256:6181494386843c0383ba9648e88b6b03ce62adaa435ac8ce6054ca6a6d88133a
+Writing manifest to image destination
+Storing signatures
+--> 61814943868
+6181494386843c0383ba9648e88b6b03ce62adaa435ac8ce6054ca6a6d88133a
+Getting image source signatures
+
+Pushing image image-registry.openshift-image-registry.svc:5000/pic-apihml/pic-bin:latest ...
+Copying blob sha256:31114e120ca0c7dc51e01721c5a689a614edb6c86de11301d503c72be1540c79
+Copying blob sha256:64d1ef3b7da93a80b0f0dbb170bd0dae897197330eeca5d4b28b32406ce05bf5
+Copying blob sha256:c9281c141a1bfec06e291d2ad29bfdedfd10a99d583fc0f48d3c26723ebe0761
+Copying blob sha256:9c02e9fdde9aa6f2772fe76939442874267a105057b17f7eac836d434af5de7e
+Copying config sha256:6181494386843c0383ba9648e88b6b03ce62adaa435ac8ce6054ca6a6d88133a
+Writing manifest to image destination
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/pic-apihml/pic-bin@sha256:9ca15b1c6daf77448c1dc71bf44d3068eca1c4eb47c01d374abcc5904867fcba
+Push successful

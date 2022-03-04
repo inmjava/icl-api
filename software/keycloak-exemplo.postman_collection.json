@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "b610365b-64d7-4fde-aee4-358b9e1eee98",
+		"name": "keycloak Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7ba5e648-7daf-43a3-8b5f-d8e6855b7ab5",
+						"exec": [
+							"var JsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\",JsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "pic",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "049e9cae-ed10-4917-902e-796db66224b9",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "profile",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "c032141",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{senha}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://webhml/kclweb/realms/master/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"webhml"
+					],
+					"path": [
+						"kclweb",
+						"realms",
+						"master",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTokenFromCode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28abb335-4d44-4b05-803c-e3b34a419046",
+						"exec": [
+							"var JsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\",JsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "pic",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "049e9cae-ed10-4917-902e-796db66224b9",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "profile",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8080/login",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "<senha>",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "code",
+							"value": "318fde54-4f3a-4cbd-93e2-26ba08ae36bc.73dff407-4442-4d0c-8f6a-a2be9b1cfe4a.7700b096-dce2-4954-b810-82dd07b8115d",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://hml.copel.com/kclweb/realms/master/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"hml",
+						"copel",
+						"com"
+					],
+					"path": [
+						"kclweb",
+						"realms",
+						"master",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://webhml/kclweb/realms/master/protocol/openid-connect/userinfo",
+					"protocol": "https",
+					"host": [
+						"webhml"
+					],
+					"path": [
+						"kclweb",
+						"realms",
+						"master",
+						"protocol",
+						"openid-connect",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eap-teste",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://eap-apihml.apps.ose43prd.copel.nt/eapweb/rest/configuracao/GOS",
+					"protocol": "http",
+					"host": [
+						"eap-apihml",
+						"apps",
+						"ose43prd",
+						"copel",
+						"nt"
+					],
+					"path": [
+						"eapweb",
+						"rest",
+						"configuracao",
+						"GOS"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "c52e34d8-f98c-45eb-9548-47670c80335b",
+			"key": "senha",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}

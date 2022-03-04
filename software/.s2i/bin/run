@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eo pipefail
+
+curl -H "Accept: application/text" http://gitprd/openshift/scriptpaas/raw/master/paas.sh -o /tmp/paas.sh
+. /tmp/paas.sh
+
+exec /usr/local/s2i/run

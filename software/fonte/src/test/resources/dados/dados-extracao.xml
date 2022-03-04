@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <TAREFA ID_TAREFA="1" NOME="tarefa teste 1" STATUS="OK"/>
+  <TAREFA ID_TAREFA="2" NOME="tarefa teste 1" STATUS="Nao OK"/>
+</dataset>

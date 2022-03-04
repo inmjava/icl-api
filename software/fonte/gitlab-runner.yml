@@ -1,0 +1,9 @@
+apiVersion: apps.gitlab.com/v1beta2
+kind: Runner
+metadata:
+ name: gitlab-runner
+spec:
+ gitlabUrl: https://git.smanager.com.br/
+ buildImage: alpine
+ token: gitlab-runner-secret
+ tags: build
