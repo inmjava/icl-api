@@ -6,3 +6,41 @@ variables:
   SKIP_TESTS: "FALSE"
   SKIP_VALID: "FALSE"
   SKIP_DEPLOY: "TRUE"
+
+variables:
+  SKIP_TESTS: "FALSE"
+  SKIP_VALID: "FALSE"
+  SKIP_DEPLOY: "TRUE"
+  JAVA_OPTS_TEST: ""
+  TEST_FAILURE_IGNORE: "true"
+  SONAR_KEY: $CI_PROJECT_NAME
+  SONAR_LOGIN: $SONAR_LOGIN_PRD
+  SONAR_URL: $SONAR_URL_PRD
+
+
+
+test-job:
+  before_script:
+    - echo "-------------------------"
+    - echo $SONAR_KEY
+    - echo $SONAR_LOGIN
+    - echo $SONAR_URL
+    - echo "-------------------------"
+    - export JGROUPS_PING_PROTOCOL=dns.DNS_PING
+    - export OPENSHIFT_DNS_PING_SERVICE_NAME=PIC-API_TESTE
+    - export OPENSHIFT_DNS_PING_SERVICE_PORT=8888
+    - export JGROUPS_CLUSTER_PASSWORD=PIC-API_DATE
+    - export SIGLA_APP_UPP=PIC-API
+    - export SIGLA_APP_LOW=pic-api
+    - export CONFIGURADOR_SIGLA_APP_UPP=PIC-API
+    - export CONFIGURADOR_PASSWORD_PROPERTY=b3cKer
+    - export CONFIGURADOR_CACHE_TIMEOUT=60000
+    - export CONFIGURADOR_CONNECT_TIMEOUT=10000
+    - export CONFIGURADOR_REQUEST_TIMEOUT=20000
+    - export CONFIGURADOR_USERNAME_PROPERTY=eapwsh
+    - export SCS_PASSWORD_PROPERTY=Branchrepeater
+    - export SCS_ENDPOINT_ADDRESS_PROPERTY=http://eap01dsv/SCSWS/SCSServiceWSImpl
+    - export SCS_CONNECT_TIMEOUT=10000
+    - export SCS_USERNAME_PROPERTY=scswsh
+    - export SCS_REQUEST_TIMEOUT=30000
+    - export CONFIGURADOR_ENDPOINT_ADDRESS_PROPERTY=http://eaphml.apps.ose43prd.copel.nt/eapws/ServicoConfiguracaoWSImpl
