@@ -1,7 +1,8 @@
 include:
-  - project: 'arquitetura/template-cicd'
-    ref: 'desen'
-    file: 'java/template-spring-gitlab-ci.yml'
+  - project: 'templatecicd/springboot'
+    ref: 'main'
+    file: '.template.yml'
 variables:
   SKIP_TESTS: "TRUE"
   SKIP_VALID: "TRUE"
+  SKIP_DEPLOY: "TRUE"
