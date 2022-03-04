@@ -1,0 +1,7 @@
+include:
+  - project: 'arquitetura/template-cicd'
+    ref: 'desen'
+    file: 'java/template-spring-gitlab-ci.yml'
+variables:
+  SKIP_TESTS: "TRUE"
+  SKIP_VALID: "TRUE"
