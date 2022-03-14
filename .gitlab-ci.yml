@@ -2,10 +2,6 @@ include:
   - project: 'templatecicd/springboot'
     ref: 'main'
     file: '.template.yml'
-variables:
-  SKIP_TESTS: "FALSE"
-  SKIP_VALID: "FALSE"
-  SKIP_DEPLOY: "TRUE"
 
 variables:
   SKIP_TESTS: "FALSE"
