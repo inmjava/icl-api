@@ -4,6 +4,7 @@ include:
     file: '.template.yml'
 
 variables:
+  PROJETO: $CI_PROJECT_NAME
   SKIP_TESTS: "FALSE"
   SKIP_VALID: "FALSE"
   SKIP_DEPLOY: "TRUE"
