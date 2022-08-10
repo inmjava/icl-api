@@ -21,8 +21,11 @@ test-job:
     - echo "-------------------------"
     - echo $SONAR_KEY
     - echo $SONAR_LOGIN
+    - echo $SONAR_LOGIN_PRD
     - echo $SONAR_URL
+    - echo $SCS_USERNAME_PROPERTY
     - echo "-------------------------"
+    
     - export JGROUPS_PING_PROTOCOL=dns.DNS_PING
     - export OPENSHIFT_DNS_PING_SERVICE_NAME=PIC-API_TESTE
     - export OPENSHIFT_DNS_PING_SERVICE_PORT=8888
@@ -44,10 +47,5 @@ test-job:
 
 teste-job2:
   before_script:
-    - echo "before_script teste-job2....INICIO"    
-    - echo $SONAR_LOGIN_PRD
-    - echo $SONAR_LOGIN
-    - echo $SCS_USERNAME_PROPERTY
-    - echo $SIGLA
-    - echo "before_script teste-job2....FIM"    
+  
 
