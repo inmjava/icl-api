@@ -14,6 +14,17 @@ variables:
   SONAR_LOGIN: $SONAR_LOGIN_PRD
   SONAR_URL: $SONAR_URL_PRD
 
+build-job:
+  image: $REGISTRY_PRD/imgjdk11maven/imgjdk11maven:latest
+  tags:
+    - dsv
+  stage: build
+  script:
+    - echo "BUILD_VERSION=$CI_BUILD_ID" >> build.env
+    - cd software/fonte
+    - echo "BYPASS DO BUILD TEMPLATE **********************"
+
+
 
 
 test-job:
