@@ -45,7 +45,4 @@ test-job:
     - export SCS_REQUEST_TIMEOUT=30000
     - export CONFIGURADOR_ENDPOINT_ADDRESS_PROPERTY=http://eaphml.apps.ose43prd.copel.nt/eapws/ServicoConfiguracaoWSImpl
 
-teste-job2:
-  before_script:
-  
 
