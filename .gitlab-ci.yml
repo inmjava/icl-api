@@ -5,7 +5,7 @@ include:
 
 variables:
   PROJETO: $CI_PROJECT_NAME
-  SKIP_TESTS: "TRUE"
+  SKIP_TESTS: "FALSE"
   SKIP_VALID: "TRUE"
   SKIP_DEPLOY: "TRUE"
   JAVA_OPTS_TEST: ""
