@@ -42,7 +42,7 @@ public class EnviarDadosCastlight {
 		this.profissionalService = profissionalService;
 	}
 
-	@Scheduled(cron = "0 50 15 * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 20 16 * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
 		
 
