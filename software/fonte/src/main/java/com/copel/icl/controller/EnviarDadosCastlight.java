@@ -42,18 +42,34 @@ public class EnviarDadosCastlight {
 		this.profissionalService = profissionalService;
 	}
 
-	@Scheduled(cron = "0 8,58 15 * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 50 15 * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
-		logger.info("Iniciando o envio de dados... " + LocalDateTime.now());
-		enviaDados();
-		logger.info("Finalizando o envio de dados... " + LocalDateTime.now());
+		
+
+		
+		logger.info("Iniciando autenticação... " + LocalDateTime.now());
+		String bearer = null;
+		Boolean isAutenticado = false;		
+		try {
+		
+			bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight();
+			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50) + " ...");
+			isAutenticado = true;
+		} catch (Exception e) {			
+			logger.error("Error ao autenticar na api: " + e);
+			isAutenticado = true;
+		}
+		logger.info("Finalizando autenticação... " + LocalDateTime.now());
+		
+		if(isAutenticado) {
+			logger.info("Iniciando o envio de dados... " + LocalDateTime.now());
+			enviaDados(bearer);
+			logger.info("Finalizando o envio de dados... " + LocalDateTime.now());
+		}					
 	}
 
-	private void enviaDados() {
-		try {
-
-			String bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight();
-			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50));
+	private void enviaDados(String bearer) {
+		try {		
 
 			int totalCountEmployeesSent = 0;
 
@@ -101,22 +117,19 @@ public class EnviarDadosCastlight {
 
 			String jsonActiveEmployeesToSend = listOfObjectsToJson(allActiveEmployeesDTO);
 
-			// salvar arquivo apenas para debug/conferencia via postman - pode remover
-			String fileName = "d:\\temp\\myList.json";
-			try (FileWriter writer = new FileWriter(fileName)) {
-				writer.write(jsonActiveEmployeesToSend);
-				System.out.println("JSON data saved to " + fileName);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			// salvar arquivo apenas para debug/conferencia via postman - pode remover
+//			String fileName = "d:\\temp\\myList.json";
+//			try (FileWriter writer = new FileWriter(fileName)) {
+//				writer.write(jsonActiveEmployeesToSend);
+//				System.out.println("JSON data saved to " + fileName);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 
 			sendActiveEmployeesToCastlight(bearer, jsonActiveEmployeesToSend);
 
 		} catch (Exception e) {
-			System.out.println(
-					"<--------------------------------------------- erro <---------------------------------------------");
-			System.out.println(e.getMessage());
-
+			logger.error("erro ao enviar dados: " + e);
 		}
 	}
 
