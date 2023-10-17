@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.copel.picmicroservice.controller.TarefaController;
-import com.copel.picmicroservice.entidade.Tarefa;
-import com.copel.picmicroservice.service.TarefaService;
+import com.copel.icl.controller.TarefaController;
+import com.copel.icl.entidade.Tarefa;
+import com.copel.icl.service.TarefaService;
 
 
 @WebMvcTest(TarefaController.class)

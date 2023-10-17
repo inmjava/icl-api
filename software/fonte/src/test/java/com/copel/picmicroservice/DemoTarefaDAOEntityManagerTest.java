@@ -11,8 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.copel.picmicroservice.dao.TarefaDAO;
-import com.copel.picmicroservice.entidade.Tarefa;
+import com.copel.icl.dao.TarefaDAO;
+import com.copel.icl.entidade.Tarefa;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

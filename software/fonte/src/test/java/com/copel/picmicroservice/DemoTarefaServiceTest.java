@@ -1,22 +1,20 @@
 package com.copel.picmicroservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.copel.picmicroservice.dao.TarefaDAO;
-import com.copel.picmicroservice.entidade.Tarefa;
-import com.copel.picmicroservice.service.TarefaService;
-
-import static org.mockito.Mockito.when;
+import com.copel.icl.dao.TarefaDAO;
+import com.copel.icl.entidade.Tarefa;
+import com.copel.icl.service.TarefaService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
