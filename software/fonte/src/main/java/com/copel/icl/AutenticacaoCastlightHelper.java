@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -22,6 +24,8 @@ public class AutenticacaoCastlightHelper {
 	private static final Logger logger = LoggerFactory.getLogger(AutenticacaoCastlightHelper.class);
 
 	public static String getAutenticacaoCastlight() throws Exception {		
+		
+		HttpHost proxy = new HttpHost("oseproxy.copel.nt", 3128, "http");
 
 		String autenticacaoCastlight = "";
 		HttpPost request = new HttpPost(castlightUrl);
@@ -33,6 +37,10 @@ public class AutenticacaoCastlightHelper {
 		nvps.add(new BasicNameValuePair("client_secret", "QGydS3qwEtukw9rqr6yvfJNWjVX4FLLwe14zn1gn"));
 
 		request.setEntity(new UrlEncodedFormEntity(nvps));		
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60000).setConnectTimeout(60000).setProxy(proxy)
+				.setConnectionRequestTimeout(60000).build();
+				
+		request.setConfig(requestConfig);
 
 		HttpResponse httpResponse;
 		try {

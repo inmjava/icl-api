@@ -1,13 +1,12 @@
 package com.copel.icl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import org.apache.http.Header;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -16,9 +15,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class HttpHelperCastlight {
 	private static final Logger logger = LoggerFactory.getLogger(HttpHelperCastlight.class);
@@ -35,6 +31,7 @@ public class HttpHelperCastlight {
 	
 	public static HttpResponse doPost(String authValue, String url, String jsonPayload) throws Exception {
 		HttpPost request = new HttpPost(url);
+		HttpHost proxy = new HttpHost("oseproxy.copel.nt", 3128, "http");
 		
 		request.addHeader("Accept", "application/json");
 		if (authValue != null) {
@@ -44,10 +41,16 @@ public class HttpHelperCastlight {
 			StringEntity requestEntity = new StringEntity(jsonPayload, ContentType.APPLICATION_JSON);
 			request.setEntity(requestEntity);
 		}
+		
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60000).setConnectTimeout(60000).setProxy(proxy)
+				.setConnectionRequestTimeout(60000).build();
+				
+		request.setConfig(requestConfig);
+		
 		HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
 		
 		int returnedHttpCode = httpResponse.getStatusLine().getStatusCode();
-		System.out.println("-------------------> httpcode: " + returnedHttpCode);
+		logger.info("doPost -------------------> httpcode: " + returnedHttpCode);
 		
 		//showResposta(httpResponse);
 		return httpResponse;
