@@ -42,10 +42,9 @@ public class EnviarDadosCastlight {
 		this.profissionalService = profissionalService;
 	}
 
-	@Scheduled(cron = "0 20 10,11,12,13,14,15 * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 10 14 * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
 		logger.info("Iniciando o envio de dados... " + LocalDateTime.now());
-		System.out.println(" ......................................................................................................");
 		enviaDados();
 		logger.info("Finalizando o envio de dados... " + LocalDateTime.now());
 	}
@@ -54,10 +53,13 @@ public class EnviarDadosCastlight {
 		try {
 
 			String bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight();
+			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50));
 
 			int totalCountEmployeesSent = 0;
 
 			List<EmployeeCastLightDTO> employeesDTO = this.profissionalService.loadEmployees();
+			logger.info("Quantidade de empregados encontrados: " + employeesDTO.size());
+			
 			List<ActiveEmployeeCastLightDTO> allActiveEmployeesDTO = new ArrayList<ActiveEmployeeCastLightDTO>();
 
 			int batchCountEmployeesToSend = 0;
@@ -91,7 +93,7 @@ public class EnviarDadosCastlight {
 			}
 
 			try {
-				logger.info("tamanho lista ativos: " + allActiveEmployeesDTO.size());
+				logger.info("Quantidade da lista ativos: " + allActiveEmployeesDTO.size());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

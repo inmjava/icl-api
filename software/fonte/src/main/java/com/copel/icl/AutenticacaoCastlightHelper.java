@@ -12,13 +12,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AutenticacaoCastlightHelper {
 	private static final String castlightUrl = "https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/token";
+	private static final Logger logger = LoggerFactory.getLogger(AutenticacaoCastlightHelper.class);
 
-	public static String getAutenticacaoCastlight() throws Exception {
+	public static String getAutenticacaoCastlight() throws Exception {		
 
 		String autenticacaoCastlight = "";
 		HttpPost request = new HttpPost(castlightUrl);
@@ -41,9 +44,8 @@ public class AutenticacaoCastlightHelper {
 		}
 
 		int returnedHttpCode = httpResponse.getStatusLine().getStatusCode();
+		logger.info("returned httpCode: " + returnedHttpCode);
 		if (returnedHttpCode == HttpStatus.SC_OK) {
-			System.out.println("-------------------> httpcode: " + returnedHttpCode);
-
 			String dados = EntityUtils.toString(httpResponse.getEntity());
 			ObjectMapper objectMapper = new ObjectMapper();
 			HashMap myMap = objectMapper.readValue(dados, HashMap.class);
@@ -51,15 +53,20 @@ public class AutenticacaoCastlightHelper {
 			String token = (String) myMap.get("access_token");
 
 			autenticacaoCastlight = "Bearer " + token;
-			System.out.println("TOKEN: " + autenticacaoCastlight);
+			logger.info("TOKEN: " + autenticacaoCastlight.substring(0, 50) + " ...");			
 
-		} else if (returnedHttpCode == HttpStatus.SC_UNAUTHORIZED) {
-			throw new UserNotAuthorizedException("Usuário ou senha inválidos!");
+		} else if (returnedHttpCode == HttpStatus.SC_UNAUTHORIZED) {			
+			String errorUnauthorized = "Usuário ou senha inválidos!";
+			logger.error(errorUnauthorized);
+			throw new UserNotAuthorizedException(errorUnauthorized);
 		} else if (returnedHttpCode == HttpStatus.SC_FORBIDDEN) {
-			throw new UserForbiddenException("Usuário não autorizado!");
+			String errorForbidden = "Usuário não autorizado!";
+			logger.error(errorForbidden);
+			throw new UserForbiddenException(errorForbidden);
 		} else {
-			String mensagemErro = "Erro ao obter token: " + returnedHttpCode + " - " + httpResponse.getStatusLine();
-			throw new AppException(mensagemErro);
+			String errorMessage = "Erro ao obter token: " + returnedHttpCode + " - " + httpResponse.getStatusLine();
+			logger.error(errorMessage);
+			throw new AppException(errorMessage);
 		}
 		
 		return autenticacaoCastlight;
