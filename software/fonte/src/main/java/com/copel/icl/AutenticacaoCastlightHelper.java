@@ -39,6 +39,7 @@ public class AutenticacaoCastlightHelper {
 			httpResponse = HttpClientBuilder.create().build().execute(request);
 		} catch (Exception e) {
 			String mensagemErro = "erro ao obter token: " + e;
+			logger.error(mensagemErro);
 			throw new AppException(mensagemErro);
 			
 		}
