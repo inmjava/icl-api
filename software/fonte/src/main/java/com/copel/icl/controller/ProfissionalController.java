@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +43,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Lista profissionais", description = "Controller dos profissionais")
 @SecurityRequirement(name = OpenApi30Config.OAUTH2_CODE_NAME)
 public class ProfissionalController {
+	
+	@Value("${castlight.url.employees}")
+	private String castlightUrlEmployees;
+	
+	@Value("${castlight.url.activeEmployees}")
+	private String castlightUrlActiveEmployees;
+	
+	@Value("${castlight.url.token}")
+	private String castlightUrlToken;
 
 	@Autowired
     private final ProfissionalService profissionalService;
@@ -65,7 +75,7 @@ public class ProfissionalController {
     		int batchSize = 50;
     		int totalCountEmployeesSent = 0;
     		
-			String bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight();
+			String bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight(castlightUrlToken);
 			
 			List<EmployeeCastLightDTO> employeesDTO = this.profissionalService.loadEmployees();
 			List<ActiveEmployeeCastLightDTO> allActiveEmployeesDTO = new ArrayList<ActiveEmployeeCastLightDTO>();
@@ -140,7 +150,7 @@ public class ProfissionalController {
 			throws Exception, IOException {
 		LocalDateTime currentDateTime = LocalDateTime.now();;			  
 		System.out.println("ini batch POST: " + currentDateTime + " enviando: " + totalEmployeesSent);				
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, "https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/employee", jsonToSend );		
+		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlEmployees, jsonToSend );		
 		currentDateTime = LocalDateTime.now();
 		System.out.println("fim batch POST: " + currentDateTime + " enviados: " + totalEmployeesSent);
 		
@@ -153,7 +163,7 @@ public class ProfissionalController {
 			throws Exception, IOException {
 		LocalDateTime currentDateTime = LocalDateTime.now();		  
 		System.out.println("ini active POST: " + currentDateTime + " enviando...: ");				
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, "https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/employee/inactivate", jsonToSend );		
+		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlActiveEmployees, jsonToSend );		
 		currentDateTime = LocalDateTime.now();
 		System.out.println("fim batch POST: " + currentDateTime + " enviados!" );
 		

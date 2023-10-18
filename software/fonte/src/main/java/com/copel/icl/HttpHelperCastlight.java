@@ -20,6 +20,7 @@ public class HttpHelperCastlight {
 	private static final Logger logger = LoggerFactory.getLogger(HttpHelperCastlight.class);
 	
 	public static HttpResponse doGet(String authValue, String url) throws Exception {
+		logger.info("doGet em: " + url);
 		HttpGet request = new HttpGet(url);
 		if (authValue != null) {
 			request.addHeader("Authorization", authValue);
@@ -30,6 +31,7 @@ public class HttpHelperCastlight {
 	}
 	
 	public static HttpResponse doPost(String authValue, String url, String jsonPayload) throws Exception {
+		logger.info("doPost em: " + url);
 		HttpPost request = new HttpPost(url);
 		HttpHost proxy = new HttpHost("oseproxy.copel.nt", 3128, "http");
 		

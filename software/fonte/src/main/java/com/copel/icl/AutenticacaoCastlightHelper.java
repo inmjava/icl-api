@@ -20,10 +20,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AutenticacaoCastlightHelper {
-	private static final String castlightUrl = "https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/token";
+	
 	private static final Logger logger = LoggerFactory.getLogger(AutenticacaoCastlightHelper.class);
 
-	public static String getAutenticacaoCastlight() throws Exception {		
+	public static String getAutenticacaoCastlight(String castlightUrl) throws Exception {		
+		logger.info("iniciando autenticacao em: " + castlightUrl + " ...");
 		
 		HttpHost proxy = new HttpHost("oseproxy.copel.nt", 3128, "http");
 

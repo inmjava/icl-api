@@ -12,6 +12,7 @@ import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -35,13 +36,22 @@ public class EnviarDadosCastlight {
 
 	private static final String TIME_ZONE = "America/Sao_Paulo";
 	private static final Integer BATCH_SIZE = 50;
+	
+	@Value("${castlight.url.employees}")
+	private String castlightUrlEmployees;
+	
+	@Value("${castlight.url.activeEmployees}")
+	private String castlightUrlActiveEmployees;
+	
+	@Value("${castlight.url.token}")
+	private String castlightUrlToken;
 
 	public EnviarDadosCastlight(ProfissionalService profissionalService) {
 		super();
 		this.profissionalService = profissionalService;
 	}
 
-	@Scheduled(cron = "0 10 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 22 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
 		
 
@@ -51,7 +61,7 @@ public class EnviarDadosCastlight {
 		Boolean isAutenticado = false;		
 		try {
 		
-			bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight();
+			bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight(castlightUrlToken);
 			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50) + " ...");
 			isAutenticado = true;
 		} catch (Exception e) {			
@@ -154,7 +164,7 @@ public class EnviarDadosCastlight {
 
 		logger.info("ini batch POST: " + LocalDateTime.now());
 		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-				"https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/employee", jsonToSend);
+				castlightUrlEmployees, jsonToSend);
 
 		InputStream contentResponse = httpResponse.getEntity().getContent();
 		String retorno = readInputStreamAsString(contentResponse);
@@ -167,7 +177,7 @@ public class EnviarDadosCastlight {
 
 		logger.info("ini inactivate POST: " + LocalDateTime.now() + " enviando...: ");
 		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-				"https://copel-dis.api.hmg.castlight.com.br/api/v3/integration/employee/inactivate", jsonOnlyActiveEmployee);
+				castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
 
 		InputStream contentResponse = httpResponse.getEntity().getContent();
 		String retorno = readInputStreamAsString(contentResponse);
