@@ -1,7 +1,6 @@
 package com.copel.icl.controller;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,7 +41,7 @@ public class EnviarDadosCastlight {
 		this.profissionalService = profissionalService;
 	}
 
-	@Scheduled(cron = "0 0 1,5 * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 10 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
 		
 
