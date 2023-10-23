@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.copel.icl.HttpHelperCastlight;
 import com.copel.icl.dto.ActiveEmployeeCastLightDTO;
 import com.copel.icl.dto.EmployeeCastLightDTO;
 import com.copel.icl.service.ApiCastlightService;
@@ -63,8 +61,7 @@ public class EnviarDadosCastlight {
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
 		String bearer = null;
 		Boolean isAutenticado = false;		
-		try {		
-//			bearer = this.autenticacaoService.getAutenticacaoCastlight();		
+		try {			
 			bearer = this.apiCastlightService.getToken();
 			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50) + " ...");
 			isAutenticado = true;
@@ -158,18 +155,14 @@ public class EnviarDadosCastlight {
 	private void sendEmployeesToCastlight(String bearer, String jsonToSend) throws Exception, IOException {
 
 		logger.info("ini batch POST: " + LocalDateTime.now());
-//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-//				castlightUrlEmployees, jsonToSend);
 		
 		ResponseEntity<String> responseEntity = this.apiCastlightService.doPost(bearer, castlightUrlEmployees, jsonToSend);
-		
 
 		// Get the response status and body
         HttpStatus httpStatus = responseEntity.getStatusCode();
         String responseBody = responseEntity.getBody();
         
-//		String retorno = readInputStreamAsString(contentResponse);
-		logger.info("    retorno: " + responseBody);
+		logger.info("    retorno: " + httpStatus + " - " + responseBody);
 
 		logger.info("fim batch POST: " + LocalDateTime.now());
 	}
@@ -177,21 +170,14 @@ public class EnviarDadosCastlight {
 	private void sendActiveEmployeesToCastlight(String bearer, String jsonOnlyActiveEmployee) throws Exception, IOException {
 
 		logger.info("ini inactivate POST: " + LocalDateTime.now() + " enviando...: ");
-//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-//				castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
-
-//		InputStream contentResponse = httpResponse.getEntity().getContent();
-		
 		
 		ResponseEntity<String> responseEntity = this.apiCastlightService.doPost(bearer, castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
 		
-
 		// Get the response status and body
         HttpStatus httpStatus = responseEntity.getStatusCode();
         String responseBody = responseEntity.getBody();
         
-//		String retorno = readInputStreamAsString(contentResponse);
-		logger.info("    retorno: " + responseBody);
+        logger.info("    retorno: " + httpStatus + " - " + responseBody);
 
 		logger.info("fim inactivate POST: " + LocalDateTime.now() + " enviados!");
 	}
