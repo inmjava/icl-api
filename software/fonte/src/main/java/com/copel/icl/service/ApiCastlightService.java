@@ -125,8 +125,6 @@ public class ApiCastlightService {
     
     
     public ResponseEntity<String> doPost(String authValue, String url, String jsonPayload) throws Exception {
-        RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", "application/json");
         headers.set("Content-Type", "application/json");
@@ -140,7 +138,7 @@ public class ApiCastlightService {
         ResponseEntity<String> responseEntity;
 
         try {
-            responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+            responseEntity = restTemplateAuth.exchange(url, HttpMethod.POST, requestEntity, String.class);
             System.out.println(requestEntity);
         } catch (Exception e) {
             logger.error("Error while making the POST request: " + e.getMessage());
