@@ -3,11 +3,13 @@ package com.copel.icl.monitor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.copel.icl.dao.ProfissionalDAOImpl;
 import com.copel.icl.dao.TarefaDAO;
-import com.copel.icl.util.Ambiente;
-import com.copel.icl.util.AmbienteEnum;
+import com.copel.icl.dto.EmployeeCastLightDTO;
 import com.copel.icl.util.PropriedadesAplicacao;
 import com.copel.monitor.Monitor;
 import com.copel.monitor.pojo.Mensagem;
@@ -15,10 +17,15 @@ import com.copel.monitor.pojo.Mensagem;
 
 public class MonitorImpl implements Monitor {
 	
-
+	private static final Logger logger = LoggerFactory.getLogger(MonitorImpl.class);
 	
 	@Autowired
 	TarefaDAO tarefaDAO;
+	
+	@Autowired
+	private ProfissionalDAOImpl profissionalDAOImpl;
+
+	
 	
 	@Override
 	public List<Mensagem> execute() throws Exception {
@@ -34,17 +41,19 @@ public class MonitorImpl implements Monitor {
 			listaDeErros.add(msg);
 		}
 		
-	
-		
-		//teste - de acesso ao DAO
 		try {
-			tarefaDAO.count();
-		}
-		catch (Exception e) {
-			Mensagem msg = new Mensagem(501, new String[] {e.getMessage()});
+			List<EmployeeCastLightDTO> employees;
+			employees = this.profissionalDAOImpl.loadEmployees();
+			
+			if (employees.size()<1000) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			logger.error("503 - erro ao listar empregados no banco de dados....");
+			Mensagem msg = new Mensagem(503, new String[] {e.getMessage()});
 			listaDeErros.add(msg);
 		}
-				
+		
 		return listaDeErros;		
 	}
 	

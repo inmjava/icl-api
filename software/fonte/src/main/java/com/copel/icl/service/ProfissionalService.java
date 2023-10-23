@@ -13,7 +13,7 @@ import com.copel.icl.dto.EmployeeCastLightDTO;
 public class ProfissionalService {
 
     @Autowired
-    private ProfissionalDAOImpl designacaoTemporariaDAO;
+    private ProfissionalDAOImpl profissionalDAO;
 
 
     public ProfissionalService() {
@@ -21,6 +21,6 @@ public class ProfissionalService {
     }
 
     public List<EmployeeCastLightDTO> loadEmployees() {
-        return this.designacaoTemporariaDAO.loadEmployees();
+        return this.profissionalDAO.loadEmployees();
     }
 }

@@ -37,71 +37,6 @@ public class ApiCastlightService {
 
     @Value("${castlight.auth.clientSecret}")
     private String clientSecret;
-
-//	public String getAutenticacaoCastlight() throws Exception {		
-//		
-//		String castlightUrl = apiUrl;
-//		logger.info("iniciando autenticacao em: " + castlightUrl + " ...");
-//				
-//		String tokenCastlight = "";
-//		HttpPost requestPost = new HttpPost(castlightUrl);
-//
-//		List<NameValuePair> requestBody = new ArrayList<NameValuePair>();
-//
-//		requestBody.add(new BasicNameValuePair("grant_type", "client_credentials"));
-//		requestBody.add(new BasicNameValuePair("client_id", clientId));
-//		requestBody.add(new BasicNameValuePair("client_secret", clientSecret));
-//
-//		requestPost.setEntity(new UrlEncodedFormEntity(requestBody));		
-//
-//		
-//		RequestConfig requestConfig = null;
-//		try {
-//			requestConfig = HttpHelperCastlight.getRequestConfig();
-//			requestPost.setConfig(requestConfig);
-//		} catch (Exception e) {
-//			logger.error("erro ao configurar o proxy: " + e);
-//		}
-//
-//		HttpResponse httpResponse;
-//		try {
-//			httpResponse = HttpClientBuilder.create().build().execute(requestPost);
-//		} catch (Exception e) {
-//			String mensagemErro = "erro ao obter token: " + e;
-//			logger.error(mensagemErro);
-//			throw new AppException(mensagemErro);
-//			
-//		}
-//
-//		int returnedHttpCode = httpResponse.getStatusLine().getStatusCode();
-//		logger.info("returned httpCode: " + returnedHttpCode);
-//		if (returnedHttpCode == HttpStatus.SC_OK) {
-//			String dados = EntityUtils.toString(httpResponse.getEntity());
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			HashMap myMap = objectMapper.readValue(dados, HashMap.class);
-//
-//			String token = (String) myMap.get("access_token");
-//
-//			tokenCastlight = "Bearer " + token;
-//			logger.info("TOKEN: " + tokenCastlight.substring(0, 50) + " ...");			
-//
-//		} else if (returnedHttpCode == HttpStatus.SC_UNAUTHORIZED) {			
-//			String errorUnauthorized = "Usuário ou senha inválidos!";
-//			logger.error(errorUnauthorized);
-//			throw new UserNotAuthorizedException(errorUnauthorized);
-//		} else if (returnedHttpCode == HttpStatus.SC_FORBIDDEN) {
-//			String errorForbidden = "Usuário não autorizado!";
-//			logger.error(errorForbidden);
-//			throw new UserForbiddenException(errorForbidden);
-//		} else {
-//			String errorMessage = "Erro ao obter token: " + returnedHttpCode + " - " + httpResponse.getStatusLine();
-//			logger.error(errorMessage);
-//			throw new AppException(errorMessage);
-//		}
-//		
-//		return tokenCastlight;
-//
-//	}
 	
     public String getToken() {
         // request body
@@ -138,8 +73,7 @@ public class ApiCastlightService {
         ResponseEntity<String> responseEntity;
 
         try {
-            responseEntity = restTemplateAuth.exchange(url, HttpMethod.POST, requestEntity, String.class);
-            System.out.println(requestEntity);
+            responseEntity = restTemplateAuth.exchange(url, HttpMethod.POST, requestEntity, String.class);            
         } catch (Exception e) {
             logger.error("Error while making the POST request: " + e.getMessage());
             throw e;

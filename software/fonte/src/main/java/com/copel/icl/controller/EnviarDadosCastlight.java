@@ -55,7 +55,7 @@ public class EnviarDadosCastlight {
 		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 10 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 30 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
@@ -162,7 +162,7 @@ public class EnviarDadosCastlight {
         HttpStatus httpStatus = responseEntity.getStatusCode();
         String responseBody = responseEntity.getBody();
         
-		logger.info("    retorno: " + httpStatus + " - " + responseBody);
+		logger.info("    retorno: " + httpStatus);
 
 		logger.info("fim batch POST: " + LocalDateTime.now());
 	}
@@ -177,7 +177,7 @@ public class EnviarDadosCastlight {
         HttpStatus httpStatus = responseEntity.getStatusCode();
         String responseBody = responseEntity.getBody();
         
-        logger.info("    retorno: " + httpStatus + " - " + responseBody);
+        logger.info("    retorno: " + httpStatus);
 
 		logger.info("fim inactivate POST: " + LocalDateTime.now() + " enviados!");
 	}
