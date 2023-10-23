@@ -2,6 +2,9 @@ package com.copel.icl.externo;
 
 import java.time.Duration;
 
+import org.apache.http.HttpHost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
 import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,10 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+
+import com.copel.icl.util.AmbienteEnum;
 
 @Configuration
 public class ConfigRestTemplate {
@@ -31,6 +37,15 @@ public class ConfigRestTemplate {
 	@Value("${rhj.read-timeout}")
 	Long readTimeoutRHJ;
 	
+	@Value("${proxy.host}")
+	String proxyHost;
+	
+	@Value("${proxy.port}")
+	Integer proxyPort;
+	
+	@Value("${app.ambiente}")
+	String ambiente;
+	
 	
 	@Bean(name="restTemplateRHJ")
 	public RestTemplate restTemplateRHJ(RestTemplateBuilder builder) {
@@ -46,7 +61,29 @@ public class ConfigRestTemplate {
 				.setReadTimeout(Duration.ofMillis(readTimeoutRHJ)).build();
 	}
 
+	@Bean(name="restTemplateAuthCastligth")
+    public RestTemplate restTemplateAuthCastligth() {		
+		if(isLocalEnv()){
+            return new RestTemplate(); // No proxy for local execution
+        } else {        	
+    		return getRestTemplateWithProxy();	
+        }
+    }
 
+	private RestTemplate getRestTemplateWithProxy() {
+		HttpHost proxy = new HttpHost(proxyHost,proxyPort, "http");
+		CloseableHttpClient httpClient = HttpClients.custom().setProxy(proxy).build();
+		HttpComponentsClientHttpRequestFactory factoryWithProxy = new HttpComponentsClientHttpRequestFactory(httpClient);    		
+		return new RestTemplate(factoryWithProxy);
+	}
+	
+	private Boolean isLocalEnv() {
+		if(ambiente.equals(AmbienteEnum.LOCAL.getSigla()) || ambiente.equals(AmbienteEnum.DSV.getSigla())){
+            return true;
+        } else {
+        	return false;	
+        }
+	}
 
 	
 	//-----------------------

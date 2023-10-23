@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.copel.icl.AutenticacaoCastlightHelper;
 import com.copel.icl.HttpHelperCastlight;
 import com.copel.icl.doc.OpenApi30Config;
 import com.copel.icl.dto.ActiveEmployeeCastLightDTO;
 import com.copel.icl.dto.EmployeeCastLightDTO;
+import com.copel.icl.service.ApiCastlightService;
 import com.copel.icl.service.ProfissionalService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -55,9 +55,13 @@ public class ProfissionalController {
 
 	@Autowired
     private final ProfissionalService profissionalService;
+	
+	@Autowired
+	private final ApiCastlightService autenticacaoService;
 
-    public ProfissionalController(ProfissionalService profissionalService) {
+    public ProfissionalController(ProfissionalService profissionalService,ApiCastlightService autenticacaoService) {
         this.profissionalService = profissionalService;
+        this.autenticacaoService = autenticacaoService;
        
     }
 
@@ -75,7 +79,8 @@ public class ProfissionalController {
     		int batchSize = 50;
     		int totalCountEmployeesSent = 0;
     		
-			String bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight(castlightUrlToken);
+//			String bearer = autenticacaoService.getAutenticacaoCastlight();
+			String bearer = autenticacaoService.getToken();
 			
 			List<EmployeeCastLightDTO> employeesDTO = this.profissionalService.loadEmployees();
 			List<ActiveEmployeeCastLightDTO> allActiveEmployeesDTO = new ArrayList<ActiveEmployeeCastLightDTO>();
@@ -96,7 +101,7 @@ public class ProfissionalController {
 				if(batchCountEmployeesToSend == batchSize || isTheLastEmployee) {
 					
 					String jsonEmployeesToSend = listOfObjectsToJson(batchEmployeesToSend);
-					sendEmployeesToCastlight(totalCountEmployeesSent, bearer, jsonEmployeesToSend);
+//					sendEmployeesToCastlight(totaresponseBodylCountEmployeesSent, bearer, jsonEmployeesToSend);
 					
 					//clean and reset the batch parameters
 					batchCountEmployeesToSend = 0;
@@ -131,7 +136,7 @@ public class ProfissionalController {
 	            e.printStackTrace();
 	        }		
 						
-			sendActiveEmployeesToCastlight(bearer,jsonActiveEmployeesToSend);
+//			sendActiveEmployeesToCastlight(bearer,jsonActiveEmployeesToSend);
 		
 		} catch (Exception e) {
 			 System.out.println("<--------------------------------------------- erro <---------------------------------------------");
@@ -146,31 +151,31 @@ public class ProfissionalController {
 		return jsonEmployeesToSend;
 	}
 
-	private void sendEmployeesToCastlight(int totalEmployeesSent, String bearer, String jsonToSend)
-			throws Exception, IOException {
-		LocalDateTime currentDateTime = LocalDateTime.now();;			  
-		System.out.println("ini batch POST: " + currentDateTime + " enviando: " + totalEmployeesSent);				
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlEmployees, jsonToSend );		
-		currentDateTime = LocalDateTime.now();
-		System.out.println("fim batch POST: " + currentDateTime + " enviados: " + totalEmployeesSent);
-		
-		InputStream contentResponse = httpResponse.getEntity().getContent();
-		String rett = readInputStreamAsString(contentResponse);
-		System.out.println("-> " + rett);
-	}
-	
-	private void sendActiveEmployeesToCastlight(String bearer, String jsonToSend)
-			throws Exception, IOException {
-		LocalDateTime currentDateTime = LocalDateTime.now();		  
-		System.out.println("ini active POST: " + currentDateTime + " enviando...: ");				
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlActiveEmployees, jsonToSend );		
-		currentDateTime = LocalDateTime.now();
-		System.out.println("fim batch POST: " + currentDateTime + " enviados!" );
-		
-		InputStream contentResponse = httpResponse.getEntity().getContent();
-		String rett = readInputStreamAsString(contentResponse);
-		System.out.println("-> " + rett);
-	}	
+//	private void sendEmployeesToCastlight(int totalEmployeesSent, String bearer, String jsonToSend)
+//			throws Exception, IOException {
+//		LocalDateTime currentDateTime = LocalDateTime.now();;			  
+//		System.out.println("ini batch POST: " + currentDateTime + " enviando: " + totalEmployeesSent);				
+//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlEmployees, jsonToSend );		
+//		currentDateTime = LocalDateTime.now();
+//		System.out.println("fim batch POST: " + currentDateTime + " enviados: " + totalEmployeesSent);
+//		
+//		InputStream contentResponse = httpResponse.getEntity().getContent();
+//		String rett = readInputStreamAsString(contentResponse);
+//		System.out.println("-> " + rett);
+//	}
+//	
+//	private void sendActiveEmployeesToCastlight(String bearer, String jsonToSend)
+//			throws Exception, IOException {
+//		LocalDateTime currentDateTime = LocalDateTime.now();		  
+//		System.out.println("ini active POST: " + currentDateTime + " enviando...: ");				
+//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer, castlightUrlActiveEmployees, jsonToSend );		
+//		currentDateTime = LocalDateTime.now();
+//		System.out.println("fim batch POST: " + currentDateTime + " enviados!" );
+//		
+//		InputStream contentResponse = httpResponse.getEntity().getContent();
+//		String rett = readInputStreamAsString(contentResponse);
+//		System.out.println("-> " + rett);
+//	}	
     
     private static String readInputStreamAsString(InputStream inputStream) throws Exception {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

@@ -13,26 +13,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.copel.icl.AutenticacaoCastlightHelper;
 import com.copel.icl.HttpHelperCastlight;
 import com.copel.icl.dto.ActiveEmployeeCastLightDTO;
 import com.copel.icl.dto.EmployeeCastLightDTO;
+import com.copel.icl.service.ApiCastlightService;
 import com.copel.icl.service.ProfissionalService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-@Component
+@Service
 @EnableScheduling
 public class EnviarDadosCastlight {
 	private static final Logger logger = LoggerFactory.getLogger(EnviarDadosCastlight.class);
 
 	@Autowired
 	private final ProfissionalService profissionalService;
+	
+	@Autowired
+	private final ApiCastlightService apiCastlightService;
 
 	private static final String TIME_ZONE = "America/Sao_Paulo";
 	private static final Integer BATCH_SIZE = 50;
@@ -46,22 +51,21 @@ public class EnviarDadosCastlight {
 	@Value("${castlight.url.token}")
 	private String castlightUrlToken;
 
-	public EnviarDadosCastlight(ProfissionalService profissionalService) {
+	public EnviarDadosCastlight(ProfissionalService profissionalService, ApiCastlightService autenticacaoService) {
 		super();
 		this.profissionalService = profissionalService;
+		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 22 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 50 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlightMadrugada() {
-		
-
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
 		String bearer = null;
 		Boolean isAutenticado = false;		
-		try {
-		
-			bearer = AutenticacaoCastlightHelper.getAutenticacaoCastlight(castlightUrlToken);
+		try {		
+//			bearer = this.autenticacaoService.getAutenticacaoCastlight();		
+			bearer = this.apiCastlightService.getToken();
 			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50) + " ...");
 			isAutenticado = true;
 		} catch (Exception e) {			
@@ -126,15 +130,6 @@ public class EnviarDadosCastlight {
 
 			String jsonActiveEmployeesToSend = listOfObjectsToJson(allActiveEmployeesDTO);
 
-//			// salvar arquivo apenas para debug/conferencia via postman - pode remover
-//			String fileName = "d:\\temp\\myList.json";
-//			try (FileWriter writer = new FileWriter(fileName)) {
-//				writer.write(jsonActiveEmployeesToSend);
-//				System.out.println("JSON data saved to " + fileName);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-
 			sendActiveEmployeesToCastlight(bearer, jsonActiveEmployeesToSend);
 
 		} catch (Exception e) {
@@ -163,12 +158,18 @@ public class EnviarDadosCastlight {
 	private void sendEmployeesToCastlight(String bearer, String jsonToSend) throws Exception, IOException {
 
 		logger.info("ini batch POST: " + LocalDateTime.now());
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-				castlightUrlEmployees, jsonToSend);
+//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
+//				castlightUrlEmployees, jsonToSend);
+		
+		ResponseEntity<String> responseEntity = this.apiCastlightService.doPost(bearer, castlightUrlEmployees, jsonToSend);
+		
 
-		InputStream contentResponse = httpResponse.getEntity().getContent();
-		String retorno = readInputStreamAsString(contentResponse);
-		logger.info("    retorno: " + retorno);
+		// Get the response status and body
+        HttpStatus httpStatus = responseEntity.getStatusCode();
+        String responseBody = responseEntity.getBody();
+        
+//		String retorno = readInputStreamAsString(contentResponse);
+		logger.info("    retorno: " + responseBody);
 
 		logger.info("fim batch POST: " + LocalDateTime.now());
 	}
@@ -176,12 +177,21 @@ public class EnviarDadosCastlight {
 	private void sendActiveEmployeesToCastlight(String bearer, String jsonOnlyActiveEmployee) throws Exception, IOException {
 
 		logger.info("ini inactivate POST: " + LocalDateTime.now() + " enviando...: ");
-		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
-				castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
+//		HttpResponse httpResponse = HttpHelperCastlight.doPost(bearer,
+//				castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
 
-		InputStream contentResponse = httpResponse.getEntity().getContent();
-		String retorno = readInputStreamAsString(contentResponse);
-		logger.info("    retorno: " + retorno);
+//		InputStream contentResponse = httpResponse.getEntity().getContent();
+		
+		
+		ResponseEntity<String> responseEntity = this.apiCastlightService.doPost(bearer, castlightUrlActiveEmployees, jsonOnlyActiveEmployee);
+		
+
+		// Get the response status and body
+        HttpStatus httpStatus = responseEntity.getStatusCode();
+        String responseBody = responseEntity.getBody();
+        
+//		String retorno = readInputStreamAsString(contentResponse);
+		logger.info("    retorno: " + responseBody);
 
 		logger.info("fim inactivate POST: " + LocalDateTime.now() + " enviados!");
 	}
