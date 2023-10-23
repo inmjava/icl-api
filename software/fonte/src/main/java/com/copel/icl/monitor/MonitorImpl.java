@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.copel.icl.dao.ProfissionalDAOImpl;
-import com.copel.icl.dao.TarefaDAO;
 import com.copel.icl.dto.EmployeeCastLightDTO;
 import com.copel.icl.util.PropriedadesAplicacao;
 import com.copel.monitor.Monitor;
@@ -18,15 +17,10 @@ import com.copel.monitor.pojo.Mensagem;
 public class MonitorImpl implements Monitor {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MonitorImpl.class);
-	
-	@Autowired
-	TarefaDAO tarefaDAO;
-	
+			
 	@Autowired
 	private ProfissionalDAOImpl profissionalDAOImpl;
 
-	
-	
 	@Override
 	public List<Mensagem> execute() throws Exception {
 		
@@ -42,12 +36,14 @@ public class MonitorImpl implements Monitor {
 		}
 		
 		try {
+			logger.info("iniciando teste de listar empregados...");
 			List<EmployeeCastLightDTO> employees;
 			employees = this.profissionalDAOImpl.loadEmployees();
-			
+			logger.info("fim teste de listar empregados...: qtd: " + employees.size());
 			if (employees.size()<1000) {
-				throw new Exception();
+				throw new Exception("lista com menos de 1000 empregados...");
 			}
+			
 		} catch (Exception e) {
 			logger.error("503 - erro ao listar empregados no banco de dados....");
 			Mensagem msg = new Mensagem(503, new String[] {e.getMessage()});

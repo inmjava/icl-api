@@ -22,7 +22,6 @@ public class ApiCastlightService {
     @Qualifier("restTemplateAuthCastligth")
     private RestTemplate restTemplateAuth;
 	
-	
 	public ApiCastlightService() {
 		super();
 	}
