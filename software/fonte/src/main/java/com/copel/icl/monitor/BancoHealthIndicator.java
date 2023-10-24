@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.copel.icl.dao.ProfissionalDAOImpl;
 import com.copel.icl.dto.EmployeeCastLightDTO;
-import com.copel.icl.externo.scs.SCSRest;
-import com.copel.monitor.pojo.Mensagem;
 
 @Component
 public class BancoHealthIndicator implements HealthIndicator {
