@@ -14,10 +14,7 @@
 		</encoder>
 	</appender>
 
-
-
-
-	<appender name="RollingFile"
+	<appender name="RollingFile-app"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOGS}/${PODNAME}-app.log</file>
 		<rollingPolicy
@@ -37,16 +34,40 @@
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
 		</encoder>
-
 	</appender>
 
+	<appender name="RollingFile-monitor"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOGS}/${PODNAME}-monitor.log</file>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${LOGS}/${PODNAME}-monitor-%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>2</maxIndex>
+		</rollingPolicy>
 
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>5MB</maxFileSize>
+		</triggeringPolicy>
+
+
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
+		</encoder>
+	</appender>
 
 	<!-- LOG everything at INFO level -->
 	<root level="info">
-		<appender-ref ref="RollingFile" />
+		<appender-ref ref="RollingFile-app" />
 		<appender-ref ref="Console" />
 	</root>
+	
+	<logger name="com.copel.icl.monitor" level="info" additivity="false">
+		<appender-ref ref="RollingFile-monitor" />
+	</logger>
+	
 
 
 </configuration>
