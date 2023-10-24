@@ -19,10 +19,10 @@
 
 	<appender name="RollingFile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/${PODNAME}-pic.log</file>
+		<file>${LOGS}/${PODNAME}-app.log</file>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${LOGS}/${PODNAME}-pic-%i.log</fileNamePattern>
+			<fileNamePattern>${LOGS}/${PODNAME}-app-%i.log</fileNamePattern>
 			<minIndex>1</minIndex>
 			<maxIndex>5</maxIndex>
 		</rollingPolicy>
@@ -38,12 +38,7 @@
 			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
 		</encoder>
 
-
 	</appender>
-
-
-
-
 
 
 
@@ -53,10 +48,5 @@
 		<appender-ref ref="Console" />
 	</root>
 
-	<!-- LOG "com.copel*" at TRACE level -->
-	<logger name="com.copel" level="trace" additivity="false">
-		<appender-ref ref="RollingFile" />
-		<appender-ref ref="Console" />
-	</logger>
 
 </configuration>
