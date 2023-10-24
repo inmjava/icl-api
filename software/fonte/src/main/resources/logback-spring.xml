@@ -65,6 +65,12 @@
 	<logger name="com.copel.icl.monitor" level="info" additivity="false">
 		<appender-ref ref="RollingFile-monitor" />
 	</logger>
+
+	<!-- LOG "com.copel*" at TRACE level -->
+	<logger name="com.copel" level="info" additivity="false">
+		<appender-ref ref="RollingFile-app" />
+		<appender-ref ref="Console" />
+	</logger>	
 	
 
 
