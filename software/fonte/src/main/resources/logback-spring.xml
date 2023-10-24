@@ -29,7 +29,6 @@
 			<maxFileSize>5MB</maxFileSize>
 		</triggeringPolicy>
 
-
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
@@ -50,7 +49,6 @@
 			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<maxFileSize>5MB</maxFileSize>
 		</triggeringPolicy>
-
 
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
