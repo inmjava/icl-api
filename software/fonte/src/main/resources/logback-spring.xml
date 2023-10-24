@@ -4,6 +4,7 @@
 	<include
 		resource="org/springframework/boot/logging/logback/defaults.xml" />
 	<property name="LOGS" value="${LOGS_DIR}" />
+	<property name="PODNAME" value="${HOSTNAME}" />
 
 	<appender name="Console"
 		class="ch.qos.logback.core.ConsoleAppender">
@@ -14,35 +15,14 @@
 	</appender>
 
 
-	<appender name="RollingFileTrace"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/app/pic.log</file>
-		<rollingPolicy
-			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${LOGS}/app/pic-%i.log</fileNamePattern>
-			<minIndex>1</minIndex>
-			<maxIndex>5</maxIndex>
-		</rollingPolicy>
 
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<maxFileSize>5MB</maxFileSize>
-		</triggeringPolicy>
-
-
-		<encoder
-			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
-		</encoder>
-
-	</appender>
 
 	<appender name="RollingFile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/server.log</file>
+		<file>${LOGS}/${PODNAME}-pic.log</file>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${LOGS}/server-%i.log</fileNamePattern>
+			<fileNamePattern>${LOGS}/${PODNAME}-pic-%i.log</fileNamePattern>
 			<minIndex>1</minIndex>
 			<maxIndex>5</maxIndex>
 		</rollingPolicy>
@@ -58,7 +38,14 @@
 			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
 		</encoder>
 
+
 	</appender>
+
+
+
+
+
+
 
 	<!-- LOG everything at INFO level -->
 	<root level="info">
@@ -68,7 +55,8 @@
 
 	<!-- LOG "com.copel*" at TRACE level -->
 	<logger name="com.copel" level="trace" additivity="false">
-		<appender-ref ref="RollingFileTrace" />
+		<appender-ref ref="RollingFile" />
+		<appender-ref ref="Console" />
 	</logger>
 
 </configuration>
