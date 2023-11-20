@@ -4,7 +4,6 @@
 	<include
 	resource="org/springframework/boot/logging/logback/defaults.xml" />
 	<property name="LOGS" value="${LOGS_DIR}" />
-	<property name="PODNAME" value="${HOSTNAME}" />
 
 	<appender name="Console"
 		class="ch.qos.logback.core.ConsoleAppender">
@@ -16,10 +15,10 @@
 
 	<appender name="RollingFile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/${PODNAME}-icl.log</file>
+		<file>${LOGS}/pic.log</file>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${LOGS}/${PODNAME}-icl-%i.log</fileNamePattern>
+			<fileNamePattern>${LOGS}/pic-%i.log</fileNamePattern>
 			<minIndex>1</minIndex>
 			<maxIndex>5</maxIndex>
 		</rollingPolicy>
@@ -34,7 +33,6 @@
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d %p %C{1}:%line [%t] %msg%n</Pattern>
 		</encoder>
-
 
 	</appender>
 
