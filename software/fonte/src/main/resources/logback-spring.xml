@@ -43,7 +43,7 @@
 	</root>
 
 	<!-- LOG "com.copel*" at TRACE level -->
-	<logger name="com.copel" level="trace" additivity="false">
+	<logger name="com.copel" level="info" additivity="false">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</logger>

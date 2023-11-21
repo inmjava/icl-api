@@ -29,9 +29,9 @@ public class SCSHealthIndicator implements HealthIndicator {
         // perform some specific health check
     	
     	try {
-			logger.info("testando conexao com o SCS");
+			logger.debug("testando conexao com o SCS");
 			String versao = scsRest.getVersaoServico();
-			logger.info("acessando a versao " + versao);
+			logger.debug("acessando a versao " + versao);
 		} catch (Exception e) {
 			return 1;
 		}
