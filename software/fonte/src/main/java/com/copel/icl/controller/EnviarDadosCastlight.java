@@ -55,21 +55,26 @@ public class EnviarDadosCastlight {
 		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 15 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 39 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlight() {
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
 		String bearer = null;
 		Boolean isAutenticado = false;		
+		logger.info("fim variavel isAutenticado: " + isAutenticado + " - " + LocalDateTime.now());
 		try {			
 			bearer = this.apiCastlightService.getToken();
 			logger.info("bearer para envio dos batchs: " + bearer.substring(0,50) + " ...");
 			isAutenticado = true;
 		} catch (Exception e) {			
+			e.printStackTrace();
 			logger.error("Error ao autenticar na api: " + e);
-			isAutenticado = true;
+			logger.error("Error ao autenticar na api (message): " + e.getMessage());
+			isAutenticado = false;
 		}
 		logger.info("Finalizando autenticação... " + LocalDateTime.now());
+		logger.info("fim variavel isAutenticado: " + isAutenticado + " - " + LocalDateTime.now());
+		
 		
 		if(isAutenticado) {
 			logger.info("Iniciando o envio de dados... " + LocalDateTime.now());

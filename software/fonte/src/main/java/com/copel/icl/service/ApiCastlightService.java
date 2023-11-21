@@ -43,6 +43,10 @@ public class ApiCastlightService {
         requestBody.add("grant_type", "client_credentials");
         requestBody.add("client_id", clientId);
         requestBody.add("client_secret", clientSecret);
+        
+        logger.info("client_id: " + clientId .substring(0, 10) + " ...");
+        logger.info("client_secret: " + clientSecret .substring(0, 10) + " ...");
+        logger.info("apiUrl: " + apiUrl + " ...");
 
         //request to an API
         ResponseEntity<TokenResponse> response = restTemplateAuth.postForEntity(apiUrl, requestBody, TokenResponse.class);
