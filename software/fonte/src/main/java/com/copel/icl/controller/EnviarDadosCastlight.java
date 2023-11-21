@@ -55,7 +55,7 @@ public class EnviarDadosCastlight {
 		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 35 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 0 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlight() {
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
@@ -73,7 +73,7 @@ public class EnviarDadosCastlight {
 		
 		if(isAutenticado) {
 			logger.info("Iniciando o envio de dados... " + LocalDateTime.now());
-			//enviaDados(bearer);
+			enviaDados(bearer);
 			logger.info("Finalizando o envio de dados... " + LocalDateTime.now());
 		}					
 	}
