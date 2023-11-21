@@ -57,10 +57,14 @@ public class ProfissionalController {
 	
 	@Autowired
 	private final ApiCastlightService apiCastlightService;
+	
+	@Autowired
+	private final EnviarDadosCastlight enviarDadosCastlight;
 
-    public ProfissionalController(ProfissionalService profissionalService,ApiCastlightService autenticacaoService) {
+    public ProfissionalController(ProfissionalService profissionalService,ApiCastlightService autenticacaoService,EnviarDadosCastlight enviarDadosCastlight) {
         this.profissionalService = profissionalService;
         this.apiCastlightService = autenticacaoService;
+		this.enviarDadosCastlight = enviarDadosCastlight;
        
     }
 
@@ -74,74 +78,84 @@ public class ProfissionalController {
     @GetMapping(path = "/send-all")
     public void autentica() {
     	try {
-    		
-    		int batchSize = 50;
-    		int totalCountEmployeesSent = 0;
-    		
-//			String bearer = autenticacaoService.getAutenticacaoCastlight();
-			String bearer = apiCastlightService.getToken();
-			
-			List<EmployeeCastLightDTO> employeesDTO = this.profissionalService.loadEmployees();
-			List<ActiveEmployeeCastLightDTO> allActiveEmployeesDTO = new ArrayList<ActiveEmployeeCastLightDTO>();
-			
-			int batchCountEmployeesToSend = 0;
-			
-			List<EmployeeCastLightDTO> batchEmployeesToSend = new ArrayList<EmployeeCastLightDTO>();
-			
-			for (EmployeeCastLightDTO profissionalCastLightDTO : employeesDTO) {
-				boolean isTheLastEmployee = employeesDTO.indexOf(profissionalCastLightDTO) == (employeesDTO.size() -1);
-				
-				batchEmployeesToSend.add(profissionalCastLightDTO);
-				allActiveEmployeesDTO.add(new ActiveEmployeeCastLightDTO(profissionalCastLightDTO.getCpf()));
-				
-				batchCountEmployeesToSend++;
-				totalCountEmployeesSent++;				
-				
-				if(batchCountEmployeesToSend == batchSize || isTheLastEmployee) {
-					
-					String jsonEmployeesToSend = listOfObjectsToJson(batchEmployeesToSend);
-//					sendEmployeesToCastlight(totaresponseBodylCountEmployeesSent, bearer, jsonEmployeesToSend);
-					
-					//clean and reset the batch parameters
-					batchCountEmployeesToSend = 0;
-					batchEmployeesToSend = new ArrayList<EmployeeCastLightDTO>();
-				}
-				if(isTheLastEmployee) {
-					System.out.println("último enviado: " + profissionalCastLightDTO.getName());
-				}
-				
-			}
-			
-			try {
-				System.out.println("tamanho lista ativos: " + allActiveEmployeesDTO.size());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			for (EmployeeCastLightDTO employeeCastLightDTO : batchEmployeesToSend) {
-				
-			}
-			
-			String jsonActiveEmployeesToSend = listOfObjectsToJson(allActiveEmployeesDTO);
-			System.out.println(jsonActiveEmployeesToSend);
-			
-			
-	        String fileName = "d:\\temp\\myList.json";
-
-	        try (FileWriter writer = new FileWriter(fileName)) {
-	            writer.write(jsonActiveEmployeesToSend);
-	            System.out.println("JSON data saved to " + fileName);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }		
-						
-//			sendActiveEmployeesToCastlight(bearer,jsonActiveEmployeesToSend);
-		
+    		logger.info("Iniciando send-all... " + LocalDateTime.now());
+			enviarDadosCastlight.enviaDadosCastlight();
+			logger.info("Finalizando send-all... " + LocalDateTime.now());
 		} catch (Exception e) {
-			 System.out.println("<--------------------------------------------- erro <---------------------------------------------");
-			 System.out.println(e.getMessage());
-			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+//    	try {
+//    		
+//    		int batchSize = 50;
+//    		int totalCountEmployeesSent = 0;
+//    		
+////			String bearer = autenticacaoService.getAutenticacaoCastlight();
+//			String bearer = apiCastlightService.getToken();
+//			
+//			List<EmployeeCastLightDTO> employeesDTO = this.profissionalService.loadEmployees();
+//			List<ActiveEmployeeCastLightDTO> allActiveEmployeesDTO = new ArrayList<ActiveEmployeeCastLightDTO>();
+//			
+//			int batchCountEmployeesToSend = 0;
+//			
+//			List<EmployeeCastLightDTO> batchEmployeesToSend = new ArrayList<EmployeeCastLightDTO>();
+//			
+//			for (EmployeeCastLightDTO profissionalCastLightDTO : employeesDTO) {
+//				boolean isTheLastEmployee = employeesDTO.indexOf(profissionalCastLightDTO) == (employeesDTO.size() -1);
+//				
+//				batchEmployeesToSend.add(profissionalCastLightDTO);
+//				allActiveEmployeesDTO.add(new ActiveEmployeeCastLightDTO(profissionalCastLightDTO.getCpf()));
+//				
+//				batchCountEmployeesToSend++;
+//				totalCountEmployeesSent++;				
+//				
+//				if(batchCountEmployeesToSend == batchSize || isTheLastEmployee) {
+//					
+//					String jsonEmployeesToSend = listOfObjectsToJson(batchEmployeesToSend);
+////					sendEmployeesToCastlight(totaresponseBodylCountEmployeesSent, bearer, jsonEmployeesToSend);
+//					
+//					//clean and reset the batch parameters
+//					batchCountEmployeesToSend = 0;
+//					batchEmployeesToSend = new ArrayList<EmployeeCastLightDTO>();
+//				}
+//				if(isTheLastEmployee) {
+//					System.out.println("último enviado: " + profissionalCastLightDTO.getName());
+//				}
+//				
+//			}
+//			
+//			try {
+//				System.out.println("tamanho lista ativos: " + allActiveEmployeesDTO.size());
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			for (EmployeeCastLightDTO employeeCastLightDTO : batchEmployeesToSend) {
+//				
+//			}
+//			
+//			String jsonActiveEmployeesToSend = listOfObjectsToJson(allActiveEmployeesDTO);
+//			System.out.println(jsonActiveEmployeesToSend);
+//			
+//			
+//	        String fileName = "d:\\temp\\myList.json";
+//
+//	        try (FileWriter writer = new FileWriter(fileName)) {
+//	            writer.write(jsonActiveEmployeesToSend);
+//	            System.out.println("JSON data saved to " + fileName);
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        }		
+//						
+////			sendActiveEmployeesToCastlight(bearer,jsonActiveEmployeesToSend);
+//		
+//		} catch (Exception e) {
+//			 System.out.println("<--------------------------------------------- erro <---------------------------------------------");
+//			 System.out.println(e.getMessage());
+//			
+//		}
+    	
+    	
     }
 
 	private <T> String listOfObjectsToJson(List<T> list) {

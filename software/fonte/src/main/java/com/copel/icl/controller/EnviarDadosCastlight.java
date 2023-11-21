@@ -55,7 +55,7 @@ public class EnviarDadosCastlight {
 		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 52 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 11 * * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlight() {
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
