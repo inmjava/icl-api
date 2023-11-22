@@ -38,7 +38,7 @@ public class EnviarDadosCastlight {
 	private final ApiCastlightService apiCastlightService;
 
 	private static final String TIME_ZONE = "America/Sao_Paulo";
-	private static final Integer BATCH_SIZE = 30;
+	private static final Integer BATCH_SIZE = 50;
 	
 	@Value("${castlight.url.employees}")
 	private String castlightUrlEmployees;
