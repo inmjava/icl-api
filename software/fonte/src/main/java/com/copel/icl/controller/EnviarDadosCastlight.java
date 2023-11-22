@@ -38,7 +38,7 @@ public class EnviarDadosCastlight {
 	private final ApiCastlightService apiCastlightService;
 
 	private static final String TIME_ZONE = "America/Sao_Paulo";
-	private static final Integer BATCH_SIZE = 50;
+	private static final Integer BATCH_SIZE = 30;
 	
 	@Value("${castlight.url.employees}")
 	private String castlightUrlEmployees;
@@ -55,7 +55,7 @@ public class EnviarDadosCastlight {
 		this.apiCastlightService = autenticacaoService;
 	}
 
-	@Scheduled(cron = "0 11 * * * *", zone = TIME_ZONE)
+	@Scheduled(cron = "0 0 2 * * *", zone = TIME_ZONE)
 	public void enviaDadosCastlight() {
 		
 		logger.info("Iniciando autenticação... " + LocalDateTime.now());
