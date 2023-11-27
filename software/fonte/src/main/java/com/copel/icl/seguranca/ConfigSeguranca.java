@@ -153,6 +153,7 @@ public class ConfigSeguranca {
 			.antMatchers("/demo/seg/bearer/**").authenticated()
 			.antMatchers("/demo/externo/rhj/**").permitAll()
 			.antMatchers("/profissional/**").permitAll()
+			.antMatchers("/about/**").permitAll()
 			.antMatchers("/proxy/**").authenticated()
 			.antMatchers("/tarefas/**").permitAll()
 			.antMatchers("/**").denyAll()
