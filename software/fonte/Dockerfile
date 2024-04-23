@@ -43,7 +43,7 @@ RUN mkdir -p /home/jboss/source/;chmod 777 /home/jboss/source/
 ########### imgjdk11springboot FIM ###########
 ########### icl-api INICIO ###########
 
-COPY target/*.ja /usr/app/app.jar
+ADD https://storage.cloud.google.com/bkt-org-dev-apigeefoundations/icl-1.0.0.jar?authuser=1 /usr/app/app.jar
 
 WORKDIR /usr/app
 ENV PORT 8080
