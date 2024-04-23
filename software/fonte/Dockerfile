@@ -4,7 +4,7 @@ FROM scratch
 
 ADD oraclelinux-8-slim-amd64-rootfs.tar.xz /
 
-RUN microdnf install java-11-openjdk tzdata-java*
+RUN microdnf install java-11-openjdk tar gzip tzdata-java*
 
 RUN microdnf upgrade; \
     microdnf clean all
