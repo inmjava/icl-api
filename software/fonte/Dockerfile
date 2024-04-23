@@ -43,7 +43,7 @@ RUN mkdir -p /home/jboss/source/;chmod 777 /home/jboss/source/
 ########### imgjdk11springboot FIM ###########
 ########### icl-api INICIO ###########
 
-COPY target/*.jar /usr/app/app.jar
+COPY target/*.ja /usr/app/app.jar
 
 WORKDIR /usr/app
 ENV PORT 8080
