@@ -1,4 +1,47 @@
-FROM dsoprd.copel.com:8082/imgjdk11springboot/imgjdk11springboot:latest
+########### imgjdk11 INICIO ###########
+
+FROM scratch
+
+ADD oraclelinux-8-slim-amd64-rootfs.tar.xz /
+
+RUN microdnf install java-11-openjdk tzdata-java*
+
+RUN microdnf upgrade; \
+    microdnf clean all
+
+WORKDIR /tmp
+
+USER 1001
+
+########### imgjdk11 FIM ###########
+########### imgjdk11springboot INICIO ###########
+
+ENV TECNOLOGIA="spring-boot-jdk11"
+
+USER root
+
+RUN microdnf install unzip procps vi
+
+ENV SCRIPTINICIO="SPRING_BOOT"
+
+### START.SH ### 
+
+ADD scriptinicializacao.sh /tmp/scriptinicializacao.sh
+ADD start.sh /tmp/start.sh
+
+RUN chmod 777 /tmp/start.sh
+
+### HOSTNAME ### 
+
+RUN echo "cat /proc/sys/kernel/hostname" > /usr/bin/hostname && \
+    chmod 777 /usr/bin/hostname
+
+### CREATE /home/jboss/source/ ### 
+
+RUN mkdir -p /home/jboss/source/;chmod 777 /home/jboss/source/
+
+########### imgjdk11springboot FIM ###########
+########### icl-api INICIO ###########
 
 COPY target/*.jar /usr/app/app.jar
 
