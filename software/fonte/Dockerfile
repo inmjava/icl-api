@@ -44,18 +44,22 @@ RUN mkdir -p /home/jboss/source/;chmod 777 /home/jboss/source/
 
 
 ########### imgjdk11maven INICIO ###########
-ADD apache-maven-3.8.4-bin.tar.gz /tmp/apache-maven-bin.tar.gz
+ADD apache-maven-3.8.4-bin.tar.gz /tmp/mvnextracted
 
-RUN tar -xvf /tmp/apache-maven-bin.tar.gz; \
-    mv apache* /opt/maven
+RUN mv /tmp/mvnextracted/apache* /opt/maven
+
+ENV PATH="/opt/maven/bin:${PATH}"
 ########### imgjdk11maven FIM ###########
 ########### icl-api INICIO ###########
 
-ADD https://storage.cloud.google.com/bkt-org-dev-apigeefoundations/icl-1.0.0.jar?authuser=1 /usr/app/app.jar
+# ADD . /tmp/src
+# RUN cd /tmp/src/; mvn install -DskipTests
+
+ADD https://github.com/inmjava/icl-api/releases/download/1.0.0/icl-1.0.0.jar /usr/app/app.jar
 
 WORKDIR /usr/app
 ENV PORT 8080
 EXPOSE $PORT
-CMD [ "/tmp/start.sh" ]
+CMD ["bash", "-c", "while true; do echo 'Looping...'; sleep 1; done"]
 
 
