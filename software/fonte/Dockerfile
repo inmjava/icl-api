@@ -41,6 +41,14 @@ RUN echo "cat /proc/sys/kernel/hostname" > /usr/bin/hostname && \
 RUN mkdir -p /home/jboss/source/;chmod 777 /home/jboss/source/
 
 ########### imgjdk11springboot FIM ###########
+
+
+########### imgjdk11maven INICIO ###########
+ADD apache-maven-3.8.4-bin.tar.gz /tmp/apache-maven-bin.tar.gz
+
+RUN tar -xvf /tmp/apache-maven-bin.tar.gz; \
+    mv apache* /opt/maven
+########### imgjdk11maven FIM ###########
 ########### icl-api INICIO ###########
 
 ADD https://storage.cloud.google.com/bkt-org-dev-apigeefoundations/icl-1.0.0.jar?authuser=1 /usr/app/app.jar
