@@ -60,6 +60,6 @@ ADD https://github.com/inmjava/icl-api/releases/download/1.0.0/icl-1.0.0.jar /us
 WORKDIR /usr/app
 ENV PORT 8080
 EXPOSE $PORT
-CMD ["bash", "-c", "while true; do echo 'Looping...'; sleep 1; done"]
+CMD ["/tmp/start.sh"]
 
 
